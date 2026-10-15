@@ -1,0 +1,19 @@
+{
+  "name": "makaira/oxid-connect-demodata-fix",
+  "version": "1.0.0",
+  "type": "oxideshop-module",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Makaira\\OxidConnect\\DemoDataFix\\": "src/"
+    }
+  },
+  "extra": {
+    "oxideshop": {
+      "target-directory": "makaira/oxid-connect-frontend"
+    }
+  }
+}

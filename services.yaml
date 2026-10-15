@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
+    bind:
+      Doctrine\DBAL\Connection $connection: "@makaira.oxid.database"
+
+  Makaira\OxidConnect\DemoDataFix\Modifier\Product\InheritManufacturer:
+    tags:
+      - { name: "makaira.importer.modifier.variant", priority: -512 }
