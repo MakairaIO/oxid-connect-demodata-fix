@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/MakairaIO/oxid-connect-demodata-fix/compare/1.0.0...1.1.0) (2026-10-15)
+
+
+### Features
+
+* Add dependency to our main OXID module ([99279dc](https://github.com/MakairaIO/oxid-connect-demodata-fix/commit/99279dc1078b8d5f1d2a50f68304f53f2d02877d))
+
 # 1.0.0 (2026-10-15)
 
 
