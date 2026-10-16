@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/MakairaIO/oxid-connect-demodata-fix/compare/1.1.0...1.2.0) (2026-10-16)
+
+
+### Features
+
+* Also set manufacturer title ([8509bd2](https://github.com/MakairaIO/oxid-connect-demodata-fix/commit/8509bd273cc47b6ee4daa77652c57eb2bfcb7673))
+
 # [1.1.0](https://github.com/MakairaIO/oxid-connect-demodata-fix/compare/1.0.0...1.1.0) (2026-10-15)
 
 
