@@ -8,13 +8,15 @@ use Doctrine\DBAL\Exception as DBALException;
 use Makaira\OxidConnect\DemoDataFix\Modifier\VariantModifierInterface;
 use Makaira\OxidConnectEssential\Modifier;
 use Makaira\OxidConnectEssential\Type;
+use Makaira\OxidConnectEssential\Utils\TableTranslator;
 
 class InheritManufacturer extends Modifier implements VariantModifierInterface
 {
-    private static array $manufacturerIdMap = [];
+    private static ?array $manufacturerIdMap = null;
 
     public function __construct(
         private Connection $connection,
+        private TableTranslator $tableTranslator,
     ) {
     }
 
@@ -26,15 +28,21 @@ class InheritManufacturer extends Modifier implements VariantModifierInterface
     {
         if ($type instanceof Type\Variant\Variant) {
             if (null === static::$manufacturerIdMap) {
-                $result = $this->connection->executeQuery(
-                    'SELECT OXID, OXMANUFACTURERID FROM oxarticles',
-                );
+                $query  = "SELECT DISTINCT a.OXID, m.OXID AS id, m.OXTITLE AS title
+                        FROM oxarticles a
+                        LEFT JOIN oxmanufacturers m ON m.OXID = a.OXMANUFACTURERID
+                        WHERE a.OXPARENTID = '' AND a.OXACTIVE = 1";
+                $result = $this->connection->executeQuery($this->tableTranslator->translate($query));
 
-                self::$manufacturerIdMap = $result->fetchAllKeyValue();
+                self::$manufacturerIdMap = $result->fetchAllAssociativeIndexed();
             }
 
-            if (empty($type->manufacturerid) && isset(self::$manufacturerIdMap[$type->id])) {
-                $type->manufacturerid = self::$manufacturerIdMap[$type->id];
+            if (empty($type->manufacturerid)) {
+                $manufacturer = self::$manufacturerIdMap[$type->parent] ?? null;
+                if (null !== $manufacturer) {
+                    $type->manufacturerid     = self::$manufacturerIdMap[$type->parent]['id'];
+                    $type->manufacturer_title = self::$manufacturerIdMap[$type->parent]['title'];
+                }
             }
         }
 
