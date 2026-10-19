@@ -26,7 +26,7 @@ class InheritManufacturer extends Modifier implements VariantModifierInterface
      */
     public function apply(Type $type): Type\Variant\Variant|Type
     {
-        if ($type instanceof Type\Variant\Variant) {
+        if ($type instanceof Type\Product\Product) {
             if (null === static::$manufacturerIdMap) {
                 $query  = "SELECT DISTINCT a.OXID, m.OXID AS id, m.OXTITLE AS title
                         FROM oxarticles a
@@ -37,11 +37,12 @@ class InheritManufacturer extends Modifier implements VariantModifierInterface
                 self::$manufacturerIdMap = $result->fetchAllAssociativeIndexed();
             }
 
-            if (empty($type->manufacturerid)) {
-                $manufacturer = self::$manufacturerIdMap[$type->parent] ?? null;
+            if (empty($type->manufacturerid) || empty($type->manufacturer_title)) {
+                $objectId = ($type instanceof Type\Variant\Variant) ? $type->parent : $type->id;
+                $manufacturer = self::$manufacturerIdMap[$objectId] ?? null;
                 if (null !== $manufacturer) {
-                    $type->manufacturerid     = self::$manufacturerIdMap[$type->parent]['id'];
-                    $type->manufacturer_title = self::$manufacturerIdMap[$type->parent]['title'];
+                    $type->manufacturerid     = self::$manufacturerIdMap[$objectId]['id'];
+                    $type->manufacturer_title = self::$manufacturerIdMap[$objectId]['title'];
                 }
             }
         }

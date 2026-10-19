@@ -9,3 +9,4 @@ services:
   Makaira\OxidConnect\DemoDataFix\Modifier\Product\InheritManufacturer:
     tags:
       - { name: "makaira.importer.modifier.variant", priority: -512 }
+      - { name: "makaira.importer.modifier.product", priority: -512 }
